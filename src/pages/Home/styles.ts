@@ -1,3 +1,4 @@
+import { Stop } from 'phosphor-react'
 import styled from 'styled-components'
 
 export const HomeContainer = styled.main`
@@ -49,7 +50,7 @@ export const Separator = styled.div`
   display: flex;
   justify-content: center;
 `
-export const StartCountDownButton = styled.button`
+export const BaseCountDownButton = styled.button`
   width: 100%;
   border: 0;
   padding: 1rem;
@@ -109,4 +110,24 @@ export const TaskInput = styled(BaseInput)`
 export const MinutesAmountInput = styled(BaseInput)`
   width: 4rem;
   text-align: center;
+`
+
+export const StartCountDownButton = styled(BaseCountDownButton)`
+  background: ${(props) => props.theme['green-500']};
+  color: ${(props) => props.theme['gray-100']};
+
+  &:not(:disabled):hover {
+    background: ${(props) => props.theme['green-700']};
+    transition: 0.3s;
+  }
+`
+
+export const StopCountDownButton = styled(BaseCountDownButton)`
+  background: ${(props) => props.theme['red-500']};
+  color: ${(props) => props.theme['gray-100']};
+
+  &:not(:disabled):hover {
+    background: ${(props) => props.theme['red-700']};
+    transition: 0.3s;
+  }
 `
