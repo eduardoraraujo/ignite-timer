@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { CountdownContainer, Separator } from './styles'
 import { differenceInSeconds } from 'date-fns'
+import { CyclesContext } from '../..'
 
-interface CountDownProps {
-  activeCycle: any
-  setCycles: any
-  activeCycleId: any
-}
-
-export default function CountDown({ activeCycle }: CountDownProps) {
+export default function CountDown() {
+  const { activeCycle, activeCycleId, markCurrentCycleAsFineshed } =
+    useContext(CyclesContext)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
@@ -24,15 +21,7 @@ export default function CountDown({ activeCycle }: CountDownProps) {
         )
 
         if (secondsDifference >= totalSeconds) {
-          setCycles((state) => {
-            return state.map((cycle) => {
-              if (cycle.id === activeCycleId) {
-                return { ...cycle, finishedDate: new Date() }
-              } else {
-                return cycle
-              }
-            })
-          })
+          markCurrentCycleAsFineshed()
 
           setAmountSecondsPassed(totalSeconds)
           clearInterval(interval)
@@ -45,7 +34,23 @@ export default function CountDown({ activeCycle }: CountDownProps) {
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle, activeCycleId, totalSeconds])
+  }, [activeCycle, activeCycleId, markCurrentCycleAsFineshed, totalSeconds])
+
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  const secondsAmount = currentSeconds % 60
+
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}:${seconds}`
+    } else {
+      document.title = 'Ignite Timer'
+    }
+  }, [minutes, seconds, activeCycle])
 
   return (
     <CountdownContainer>

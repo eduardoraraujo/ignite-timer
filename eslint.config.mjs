@@ -16,4 +16,10 @@ export default defineConfig([
   {
     extends: compat.extends('@rocketseat/eslint-config/react'),
   },
+  {
+    files: ['**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/no-empty-object-type': 'off',
+    },
+  },
 ])
