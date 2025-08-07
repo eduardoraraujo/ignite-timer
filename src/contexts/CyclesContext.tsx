@@ -52,16 +52,16 @@ export function CyclesContentProvider({
 }: CyclesContextProvidersProps) {
   const [cyclesState, dispatch] = useReducer(
     (state: CyclesState, action: Action) => {
-      if (action.type === 'ADD_NEW_CYCLE') {
-        return {
+
+      switch(action.type) {
+        case 'ADD_NEW_CYCLE':
+                  return {
           ...state,
           cycles: [...state.cycles, action.payload.newCycle],
           activeCycleId: action.payload.newCycle.id,
         }
-      }
-
-      if (action.type === 'INTERRUPT_CURRENT_CYCLE') {
-        return {
+        case 'INTERRUPT_CURRENT_CYCLE':
+                  return {
           ...state,
           cycles: state.cycles.map((cycle) => {
             if (cycle.id === state.activeCycleId) {
@@ -72,10 +72,8 @@ export function CyclesContentProvider({
           }),
           activeCycleId: null,
         }
-      }
-
-      if (action.type === 'MARK_CURRENT_CYCLE_AS_FINISHED') {
-        return {
+        case 'MARK_CURRENT_CYCLE_AS_FINISHED':
+                  return {
           ...state,
           cycles: state.cycles.map((cycle) => {
             if (cycle.id === state.activeCycleId) {
@@ -85,9 +83,10 @@ export function CyclesContentProvider({
             }
           }),
         }
-      }
 
-      return state
+        default:
+          return state
+      }
     },
     {
       cycles: [],
@@ -112,15 +111,6 @@ export function CyclesContentProvider({
         activeCycleId,
       },
     })
-    // setCycles((state) => {
-    //   return state.map((cycle) => {
-    //     if (cycle.id === activeCycleId) {
-    //       return { ...cycle, finishedDate: new Date() }
-    //     } else {
-    //       return cycle
-    //     }
-    //   })
-    // })
   }
 
   function createNewCycle(data: CreateCycleData) {
@@ -138,7 +128,6 @@ export function CyclesContentProvider({
       },
     })
 
-    // setCycles((prevState) => [...prevState, newCycle])
     setAmountSecondsPassed(0)
   }
 
