@@ -19,6 +19,7 @@ export default defineConfig([
   {
     files: ['**/*.d.ts'],
     rules: {
+      '@typescript-eslint/no-duplicate-enum-values': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
